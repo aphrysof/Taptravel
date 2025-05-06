@@ -1,2 +1,8 @@
 @import "tailwindcss";
 
+
+@layer components {
+    .cover-image {
+        @apply bg-[url('../../public/bg-image.svg')] bg-cover bg-center bg-no-repeat h-[944px];
+    }
+}

@@ -1,7 +1,10 @@
+import {LandingPage} from "@/components";
 
 
 export default function Home() {
-  return (
-    <h2 className={"font-bold"}>TAPTRAVEL</h2>
-  );
+    return (
+        <section className={""}>
+            <LandingPage/>
+        </section>
+    );
 }

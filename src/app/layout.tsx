@@ -1,22 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {Montserrat} from "next/font/google";
+import { Montserrat as MontserratMono } from 'next/font/google';
 import "./globals.css";
 import { registerLicense } from "@syncfusion/ej2-base";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const montserrat = Montserrat({
+    subsets: ['latin'],
+    variable: '--font-montserrat',
+    weight: ['400', '500', '700'],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const montserratMono = MontserratMono({
+    subsets: ['latin'],
+    variable: '--font-montserrat-mono',
+    weight: ['400', '700'],
 });
+
 
 export const metadata: Metadata = {
   title: "Taptravel",
   description: "Your travel sidekick buddy",
 };
+
 
 registerLicense(process.env.NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY as string)
 
@@ -29,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${montserrat.variable} ${montserratMono.variable}`}
       >
         {children}
       </body>
