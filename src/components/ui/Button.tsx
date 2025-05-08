@@ -7,6 +7,7 @@ export default function Button
      icon,
      iconPosition = 'left',
      className = '',
+    role = 'button',
      ...props
 
 }: ButtonProps) {
@@ -37,6 +38,7 @@ export default function Button
         ${className}
       `}
         disabled={disabled}
+        role={role}
         {...props}
         >
             {icon && iconPosition === 'left' && (

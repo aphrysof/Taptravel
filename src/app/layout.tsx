@@ -3,6 +3,7 @@ import {Montserrat} from "next/font/google";
 import { Montserrat as MontserratMono } from 'next/font/google';
 import "./globals.css";
 import { registerLicense } from "@syncfusion/ej2-base";
+import {Providers} from "./providers";
 
 const montserrat = Montserrat({
     subsets: ['latin'],
@@ -36,7 +37,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${montserratMono.variable}`}
       >
-        {children}
+      <Providers>
+          {children}
+      </Providers>
+
       </body>
     </html>
   );

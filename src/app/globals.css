@@ -1,6 +1,10 @@
 @import "tailwindcss";
+@plugin "../../hero.ts";
 
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 
+/* Add custom components */
 @layer components {
     .cover-image {
         @apply bg-[url('../../public/bg-image.svg')] bg-cover bg-center bg-no-repeat h-[944px];

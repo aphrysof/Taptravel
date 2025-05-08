@@ -7,5 +7,16 @@ declare type ButtonProps = {
     size?: 'small' | 'medium' | 'large'
     className?: string;
     icon?: React.ReactNode;
+    role?: string;
     iconPosition?: 'left' | 'right';
+}
+
+declare interface Tab {
+    id: string;
+    label: string;
+    content: React.ReactNode;
+}
+
+declare interface TabsProps {
+    tabs: Tab[];
 }
