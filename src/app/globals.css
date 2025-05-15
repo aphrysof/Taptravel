@@ -10,3 +10,7 @@
         @apply bg-[url('../../public/bg-image.svg')] bg-cover bg-center bg-no-repeat h-[944px];
     }
 }
+
+.solid-button {
+    @apply bg-[#223A60] text-white hover:bg-[#223A60];
+}

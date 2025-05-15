@@ -1,6 +1,12 @@
-export { default as Navbar } from './Navbar';
-export { default as Banner } from './landingpage/Banner'
-export { default as LandingPage } from './landingpage'
+export { default as Navbar } from './common/Navbar';
+export { default as Banner } from '@/components/layout/landingpage/Banner'
+export { default as LandingPage } from './layout/landingpage'
 export { default as Button } from './ui/Button'
 export { default as TabsContainer } from './ui/TabsContainer'
-export { default as FlightSection } from './landingpage/FlightSection'
+export { default as FlightSection } from '@/components/layout/landingpage/FlightSection'
+export { default as CustomSelectInput } from '@/components/layout/landingpage/forms/CustomSelectInput'
+export { default as FlightInputs } from '@/components/layout/landingpage/forms/FlightInputs'
+export { default as AirportSearch } from '@/components/layout/landingpage/forms/AirportSearch'
+export { default as OneWayForm } from '@/components/layout/landingpage/forms/OneWayForm'
+export { default as MultiCityForm } from '@/components/layout/landingpage/forms/MultiCityForm'
+export { default as RoundTripForm } from '@/components/layout/landingpage/forms/RoundTripForm'
