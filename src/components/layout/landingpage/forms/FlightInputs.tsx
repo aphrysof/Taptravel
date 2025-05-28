@@ -27,7 +27,6 @@ export default function FlightInputs() {
 
         // This function will be passed to child forms to receive their data
         const handleFormSubmit = (formType: string, typeSpecificData: any) => {
-            // Combine common data with type-specific data
             const completeFormData = {
                 tripType: formType,
                 ...formData,
@@ -35,15 +34,12 @@ export default function FlightInputs() {
             };
 
             console.log('Submitting form data:', completeFormData);
-
-            // Here you would typically send the data to your backend
             submitFlightSearch(completeFormData);
         };
 
         // Mock function to simulate API call
         const submitFlightSearch = async (data: any) => {
             try {
-                // Simulate successful submission
                 setTimeout(() => {
                     alert(`Successfully submitted ${tripType} flight search!`);
                 }, 500);
