@@ -11,7 +11,7 @@ interface FlightFormData {
     // Common fields
     passengers: number;
     class: string;
-    // Type-specific fields will be handled in their respective forms
+
 }
 
 
