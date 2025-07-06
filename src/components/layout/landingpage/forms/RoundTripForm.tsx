@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import {Button} from "@heroui/react";
+import {Button, DatePicker, Input} from "@heroui/react";
+import {getLocalTimeZone, today} from "@internationalized/date";
 
 interface RoundTripFormProps {
     onSubmit: (data: any) => void;
@@ -11,7 +12,7 @@ interface RoundTripFormProps {
     };
 }
 
-const RoundTripForm: React.FC<RoundTripFormProps> = ({ onSubmit, commonData }) => {
+const RoundTripForm: React.FC<RoundTripFormProps> = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
         origin: '',
         destination: '',
@@ -35,7 +36,7 @@ const RoundTripForm: React.FC<RoundTripFormProps> = ({ onSubmit, commonData }) =
             return;
         }
 
-        // Validate that return date is after departure date
+        // Validate that return date is after the departure date
         if (new Date(formData.returnDate) < new Date(formData.departureDate)) {
             alert('Return date must be after departure date');
             return;
@@ -46,61 +47,70 @@ const RoundTripForm: React.FC<RoundTripFormProps> = ({ onSubmit, commonData }) =
     };
 
     return (
-        <form action={handleSubmit} className="round-trip-form">
-            <div className="form-group">
-                <label htmlFor="origin">Origin</label>
-                <input
-                    type="text"
-                    id="origin"
-                    name="origin"
-                    value={formData.origin}
-                    onChange={handleChange}
-                    required
-                    placeholder="City or airport"
+        <form action={handleSubmit} className="flex gap-5 w-full items-center">
+            <div className="w-[20%]">
+
+                <Input
+                    size={"lg"}
+                    type={"text"}
+                    label={"Origin"}
+                    labelPlacement={"outside"}
+                    placeholder={"From?"}
+                    variant={"flat"}
+                    name={"origin"}
+                    // value={flightData.origin}
+                    // onChange={handleChange}
+                    isRequired
+
                 />
             </div>
 
-            <div className="form-group">
-                <label htmlFor="destination">Destination</label>
-                <input
-                    type="text"
-                    id="destination"
+            <div className="w-[20%]">
+
+                <Input
+                    size={"lg"}
+                    type={"text"}
+                    label="Destination"
+                    placeholder={"Where to?"}
+                    labelPlacement={"outside"}
                     name="destination"
-                    value={formData.destination}
-                    onChange={handleChange}
-                    required
-                    placeholder="City or airport"
+                    // value={flightData.destination}
+                    // onChange={handleChange}
+                    isRequired
+
                 />
             </div>
 
-            <div className="form-row">
-                <div className="form-group">
-                    <label htmlFor="departureDate">Departure Date</label>
-                    <input
-                        type="date"
+                <div className="w-[20%]">
+
+                    <DatePicker
                         id="departureDate"
+                        size={"lg"}
                         name="departureDate"
-                        value={formData.departureDate}
-                        onChange={handleChange}
-                        required
+                        label={"Departure date"}
+                        labelPlacement={"outside"}
+                        minValue={today(getLocalTimeZone())}
+                        isRequired
+
                     />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="returnDate">Return Date</label>
-                    <input
-                        type="date"
+                <div className="w-[20%]">
+
+                    <DatePicker
                         id="returnDate"
+                        size={"lg"}
                         name="returnDate"
-                        value={formData.returnDate}
-                        onChange={handleChange}
-                        required
-                        min={formData.departureDate} // Prevents selecting a return date before departure
+                        label={"Return date"}
+                        labelPlacement={"outside"}
+                        // minValue={today(getLocalTimeZone())}
+                        isRequired
+
                     />
                 </div>
-            </div>
 
-            <Button variant={"solid"} type={"submit"} className={"solid-button"} size={"lg"}> Search Round Trip Flights</Button>
+
+            <Button variant={"solid"} type={"submit"} className={"solid-button mt-6"} size={"lg"}> Search Round Trip Flights</Button>
 
         </form>
     );

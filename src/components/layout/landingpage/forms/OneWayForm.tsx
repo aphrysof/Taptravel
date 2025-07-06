@@ -12,7 +12,7 @@ interface OneWayFormProps {
     };
 }
 
-const OneWayForm: React.FC<OneWayFormProps> = ({ onSubmit, commonData }) => {
+const OneWayForm: React.FC<OneWayFormProps> = ({ onSubmit }) => {
     const [flightData, setFlightData] = useState({
         origin: '',
         destination: '',
