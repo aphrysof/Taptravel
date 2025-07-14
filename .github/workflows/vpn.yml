@@ -30,7 +30,6 @@ jobs:
         run: |
           echo "=== Searching for OpenVPN log files ==="
           ls -la
-          sudo cat openvpn.log
 
       - name: Start OpenVPN
         run: |
