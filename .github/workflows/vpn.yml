@@ -24,7 +24,7 @@ jobs:
           script-security 2
           up /etc/openvpn/update-systemd-resolved
           down /etc/openvpn/update-systemd-resolved
-          dhcp-option DNS 8.8.8.8
+          dhcp-option DOMAIN-ROUTE .
           EOF
           
           # Write the base config
