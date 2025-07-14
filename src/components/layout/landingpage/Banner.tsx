@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Banner() {
 
     return (
-        <section className={"relative pt-8 pb-20"}>
+        <section className={"relative py-10"}>
             <Image
                 src="/bg-image.svg"
                 alt="Hero"
