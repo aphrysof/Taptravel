@@ -35,12 +35,23 @@ jobs:
         run: |
           echo "=== Searching for OpenVPN log files ==="
           ls -la
-          sudo ls -la /var/log/openvpn
           sudo ls -la /etc/openvpn
-          sudo find /var/log -name "*openvpn*"
 
       - name: Start OpenVPN
         run: |
-          sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid
-          sudo cat openvpn.log
+          echo "=== Checking OpenVPN config ==="
+          sudo openvpn --config client.ovpn --verb 4 --test
+          
+          echo "=== Starting OpenVPN ==="
+          sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid --verb 4
+          sleep 5
+          
+          echo "=== OpenVPN Log Content ==="
+          sudo cat /tmp/openvpn.log
+          
+          echo "=== Process Status ==="
+          ps aux | grep openvpn
+          
+          echo "=== System Journal Logs ==="
+          sudo journalctl -u openvpn --no-pager --since "1 minute ago"
         
