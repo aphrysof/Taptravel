@@ -68,6 +68,11 @@ jobs:
             exit 1
           fi
 
+      - name: Test VPN connection from CI host
+        run: |
+            echo "Curling cro-mobile-bff-service.microservices.dev.cinnamon-bun.com..."
+            curl -v --max-time 10 http://cro-mobile-bff-service.microservices.dev.cinnamon-bun.com 80 || echo "Curl failed"
+
 
 
 
