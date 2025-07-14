@@ -17,6 +17,8 @@ jobs:
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
 
-      - name: List downloaded files
+      - name: Check OpenVPN log locations
         run: |
-          ls -la
+          sudo ls -la /var/log/openvpn
+          sudo ls -la /etc/openvpn
+          sudo find /var/log -name "*openvpn*"
