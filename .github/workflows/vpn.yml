@@ -58,6 +58,16 @@ jobs:
           echo "5. Checking OpenVPN logs:"
           sudo cat /tmp/openvpn.log
 
+      - name: Validate VPN Connecction
+        run: |
+          if resolvectl status | grep -q "Link.*(tun0)"; then
+            echo "Success: tun0 interface is configured correctly in systemd-resolved."
+            exit 0
+          else
+            echo "Error: tun0 interface not found in resolvectl status."
+            exit 1
+          fi
+
 
 
 
