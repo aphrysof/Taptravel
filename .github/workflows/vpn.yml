@@ -27,22 +27,25 @@ jobs:
           sed -i '1i script-security 2\nup /etc/openvpn/update-systemd-resolved\ndown /etc/openvpn/update-systemd-resolved' client.ovpn
           
 
-
-      - name: Check OpenVPN log locations
-        run: |
-          echo "=== Searching for OpenVPN log files ==="
-          ls -la
-          sudo ls -la /etc/openvpn
-
       - name: Start OpenVPN
         run: |
           
           echo "=== Starting OpenVPN ==="
-          sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid --verb 4
-          sleep 5
-          
-          echo "=== OpenVPN Log Content ==="
-          sudo cat /tmp/openvpn.log
+          sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid
+
+
+      - name: Validate VPN Connecction
+        run: |
+          if resolvectl status | grep -q "Link.*(tun0)"; then
+            echo "Success: tun0 interface is configured correctly in systemd-resolved."
+            exit 0
+          else
+            echo "Error: tun0 interface not found in resolvectl status."
+            exit 1
+          fi
+
+
+
           
 
         
