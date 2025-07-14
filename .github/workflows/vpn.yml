@@ -46,13 +46,8 @@ jobs:
       - name: Start OpenVPN
         run: |
           echo "=== Checking OpenVPN config before start ==="
-          echo "1. Verify file permissions:"
-          sudo chmod 600 client.ovpn
-          ls -l client.ovpn
-          
-          echo "2. Testing OpenVPN config:"
-          sudo openvpn --config client.ovpn --verb 3 --test
-          
+
+                    
           echo "3. Starting OpenVPN with verbose logging:"
           sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid --verb 4
           sleep 5
@@ -62,15 +57,6 @@ jobs:
           
           echo "5. Checking OpenVPN logs:"
           sudo cat /tmp/openvpn.log
-          
-          echo "6. Checking network interfaces:"
-          ip addr show
-          
-          echo "7. Checking routing:"
-          netstat -rn
-          
-          echo "8. Checking systemd-resolved status:"
-          systemctl status systemd-resolved
 
 
 
