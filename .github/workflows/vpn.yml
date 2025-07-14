@@ -16,9 +16,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
-          echo "Verifying update-systemd-resolved script exists:"
-          ls -l /etc/openvpn/update-systemd-resolved || echo "File not found"
-          sudo ln -s /usr/lib/openvpn/update-systemd-resolved /etc/openvpn/update-systemd-resolved || echo "Creating symlink"
 
       - name: Write OpenVPN config from secret
         run: |
@@ -29,9 +26,6 @@ jobs:
           # Add DNS resolution settings at the beginning of the file
           sed -i '1i script-security 2\nup /etc/openvpn/update-systemd-resolved\ndown /etc/openvpn/update-systemd-resolved' client.ovpn
           
-          echo "=== Verifying final config (without sensitive data) ==="
-          grep -i "script\|systemd" client.ovpn
-          sudo chmod 600 client.ovpn
 
 
       - name: Check OpenVPN log locations
