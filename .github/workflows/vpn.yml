@@ -12,62 +12,54 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: Install OpenVPN
+      - name: Enable KVM
         run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
-      - name: Write OpenVPN config from secret
-        run: |
-          # First create DNS settings with proper indentation
-          cat << 'EOF' > dns-settings.txt
-          script-security 2
-          up /etc/openvpn/update-systemd-resolved
-          down /etc/openvpn/update-systemd-resolved
-          dhcp-option DOMAIN-ROUTE .
-          EOF
-          
-          # Write the base config
-          echo "${{ secrets.ANTARCTICA_DEV_OPENVPN_FILE }}" > client.ovpn
-          cat dns-settings.txt
-          
-          echo "2. Adding DNS settings to config"
-          cat dns-settings.txt client.ovpn > temp.ovpn
-          mv temp.ovpn client.ovpn
-          rm dns-settings.txt
-          
-          
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: Start OpenVPN
-        run: |
-          echo "=== Checking OpenVPN config before start ==="
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-33
 
-                    
-          echo "3. Starting OpenVPN with verbose logging:"
-          sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid --verb 4
-          sleep 5
-          
-          echo "4. Checking if OpenVPN process is running:"
-          ps aux | grep openvpn
-          
-          echo "5. Checking OpenVPN logs:"
-          sudo cat /tmp/openvpn.log
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          profile: Nexus 7
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
 
-      - name: Validate VPN Connecction
-        run: |
-          if resolvectl status | grep -q "Link.*(tun0)"; then
-            echo "Success: tun0 interface is configured correctly in systemd-resolved."
-            exit 0
-          else
-            echo "Error: tun0 interface not found in resolvectl status."
-            exit 1
-          fi
 
-      - name: Test VPN connection from CI host
-        run: |
-            echo "Curling cro-mobile-bff-service.microservices.dev.cinnamon-bun.com..."
-            curl -v --max-time 10 http://cro-mobile-bff-service.microservices.dev.cinnamon-bun.com 80 || echo "Curl failed"
+      - name: Start emulator and install apk
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          profile: Nexus 7
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: true
+          script: |
+            
+            adb devices
 
+            adb shell pm list permissions
+                
 
 
 
