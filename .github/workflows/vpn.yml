@@ -15,7 +15,10 @@ jobs:
       - name: Install OpenVPN
         run: |
           sudo apt update
-          sudo apt install -y openvpn
+          sudo apt install -y openvpn openvpn-systemd-resolved
+          echo "Verifying update-systemd-resolved script exists:"
+          ls -l /etc/openvpn/update-systemd-resolved || echo "File not found"
+          sudo ln -s /usr/lib/openvpn/update-systemd-resolved /etc/openvpn/update-systemd-resolved || echo "Creating symlink"
 
       - name: Write OpenVPN config from secret
         run: |
