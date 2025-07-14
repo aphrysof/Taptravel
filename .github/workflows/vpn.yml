@@ -19,12 +19,23 @@ jobs:
 
       - name: Write OpenVPN config from secret
         run: |
+          # First write the base config from secret
           echo "${{ secrets.ANTARCTICA_DEV_OPENVPN_FILE }}" > client.ovpn
-          echo "=== Checking original config content (first few lines) ==="
-          head -n 5 client.ovpn
           
-          # Add DNS resolution settings at the beginning of the file
-          sed -i '1i script-security 2\nup /etc/openvpn/update-systemd-resolved\ndown /etc/openvpn/update-systemd-resolved' client.ovpn
+          echo "=== Adding DNS resolution settings ==="
+          # Create a temporary file with our additional settings
+          cat << 'EOF' > dns-settings.txt
+          script-security 2
+          up /etc/openvpn/update-systemd-resolved
+          down /etc/openvpn/update-systemd-resolved
+          EOF
+          # Combine the files
+          cat dns-settings.txt client.ovpn > temp.ovpn && mv temp.ovpn client.ovpn
+          rm dns-settings.txt
+          
+          echo "=== Verifying the final config (showing only the DNS settings) ==="
+          echo "First 10 lines of client.ovpn:"
+          head -n 10 client.ovpn
           
 
       - name: Start OpenVPN
