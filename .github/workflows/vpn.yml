@@ -29,9 +29,6 @@ jobs:
           
           # Write the base config
           echo "${{ secrets.ANTARCTICA_DEV_OPENVPN_FILE }}" > client.ovpn
-          
-          echo "=== Current config state ==="
-          echo "1. DNS settings to be added:"
           cat dns-settings.txt
           
           echo "2. Adding DNS settings to config"
@@ -39,8 +36,6 @@ jobs:
           mv temp.ovpn client.ovpn
           rm dns-settings.txt
           
-          echo "3. Verifying config structure (non-sensitive parts):"
-          grep -A 3 "script-security" client.ovpn
           
 
       - name: Start OpenVPN
