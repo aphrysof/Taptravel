@@ -15,10 +15,18 @@ jobs:
       - name: Install OpenVPN
         run: |
           sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
+          sudo apt install -y openvpn
+
+      - name: Write OpenVPN config from secret
+        run: |
+          echo "${{ secrets.ANTARCTICA_DEV_OPENVPN_FILE }}" > client.ovpn
+          cat <<EOF >> client.ovpn
+          script-security 2
+          up /etc/openvpn/update-systemd-resolved
+          down /etc/openvpn/update-systemd-resolved
+          EOF
 
       - name: Check OpenVPN log locations
         run: |
-          sudo ls -la /var/log/openvpn
-          sudo ls -la /etc/openvpn
-          sudo find /var/log -name "*openvpn*"
+          echo "=== Searching for OpenVPN log files ==="
+          ls -la
