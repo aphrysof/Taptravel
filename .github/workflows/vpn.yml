@@ -23,13 +23,7 @@ jobs:
       - name: Write OpenVPN config from secret
         run: |
           echo "${{ secrets.ANTARCTICA_DEV_OPENVPN_FILE }}" > client.ovpn
-          cat <<EOF >> client.ovpn
-          script-security 2
-          up /etc/openvpn/update-systemd-resolved
-          up-restart
-          down /etc/openvpn/update-systemd-resolved
-          down-pre
-          EOF
+       
 
       - name: Check OpenVPN log locations
         run: |
@@ -39,8 +33,6 @@ jobs:
 
       - name: Start OpenVPN
         run: |
-          echo "=== Checking OpenVPN config ==="
-          sudo openvpn --config client.ovpn --verb 4 --test
           
           echo "=== Starting OpenVPN ==="
           sudo openvpn --config client.ovpn --daemon --log /tmp/openvpn.log --writepid /tmp/openvpn.pid --verb 4
@@ -49,9 +41,4 @@ jobs:
           echo "=== OpenVPN Log Content ==="
           sudo cat /tmp/openvpn.log
           
-          echo "=== Process Status ==="
-          ps aux | grep openvpn
-          
-          echo "=== System Journal Logs ==="
-          sudo journalctl -u openvpn --no-pager --since "1 minute ago"
         
